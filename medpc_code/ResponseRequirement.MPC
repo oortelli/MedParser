@@ -1,0 +1,275 @@
+
+\\\ RRBL.MPC (DAILY SESSIONS OF TIMED LP RESPONSES, LP BOUTS, LICKS, LICK BOUTS)
+\               SOURCE PROGRAM FOR BOXES WROTE BY ANN CHAPPELL MODIFIED SATURDAY APRIL 21ST 2018
+\               COUNTS RESPONSES AND REINFORCERS
+\               RECORDS IRT'S IN 0.1 s RESOLUTION
+\               BUILDS ARRAYS FOR SOFT CUMULATIVE RECORDER
+\\\  VARIABLES NAMES
+\   B(0)     =  COMPONENT FRONT LEVER
+\   B(1)     =  FRONT LEFT LICKS
+\   C        =  SOFTCR ARRAY FOR CENTER LEVER (#1)
+\   D        =  SUBSCRIPT USED FOR "C" ARRAY
+\   I        = TIME H(I) , M(I) , S(I)
+\            = SET H (I) = HOURS
+\            = SET M (I) = MINUTES
+\            = SET S (I) = SECONDS
+\   T        =  TIME COUNTER FOR IRT'S (0.01")
+\\\  Z PULSE FUNCTIONS
+\   Z3     LP ON FRONT (.20)
+\   Z5     LICK ON FRONT SIPPER(.10)
+\   Z10    SIGNALS TEST END
+\   Z12    SIGNALS START ACTIVE, ON FRONT LEVER
+\   Z13    SIGNALS END ACTIVE, OFF FRONT LEVER
+\   Z14    SIGNALS START ACTIVE, ON FRONT SIPPER
+\   Z15    SIGNALS END ACTIVE, OFF FRONT SIPPER
+\   Z20    SESSION TIMER LEVER
+\   Z21    SESSION TIMER SIPPER
+\ ******************************************************************
+\                       DEFINE INPUT/OUTPUT CONSTANTS
+\ ******************************************************************
+\\\  INPUTS
+
+^FLICK = 3
+^FLEV = 1
+
+\\\  OUTPUTS
+
+^FLEV = 1
+^FSIPPER = 3
+^HOUSE = 5
+
+\ *****************************************************************
+\        DIMENSION ARRAYS TO HOLD IRT VALUES & FR VALUES
+\ *****************************************************************
+  DIM B = 4
+  DIM C = 20000
+  DIM H = 10000
+  DIM M = 10000
+  DIM S = 10000
+
+  DISKCOLUMNS = 1
+  DISKVARS = B,C,H,M,S
+\****************************************************************
+\                      TEST CHAMBERS PRIOR TO SESSION
+\******************************************************************
+
+S.S.1,
+ S1,
+     0.10":ON ^HOUSE, ^FLEV;Z12; ON ^FSIPPER; Z14 ---> S2
+ S2,
+     #Z10: OFF ^HOUSE, ^FLEV;Z13; OFF ^FSIPPER;Z15 ---> S3
+ S3,
+  300': ---> SX
+
+S.S.2,
+ S1,
+     #R^FLEV: Z3 ---> S3
+ S3,
+    0.1":OFF^FLEV ;Z13 ---> S5
+ S5,
+    0.1": OFF^HOUSE ---> S6
+ S6,
+    #R^FLICK: Z5 ---> S8
+ S8,
+    0.1":OFF^FSIPPER; Z15 ---> S9
+ S9,
+    0.1": Z10 ---> S10
+ S10,
+   300': ---> SX
+
+\ *******************************************************************
+\            SCHEDULE FOR LEFT LEVER AND LSIPPER TUBE
+\ *******************************************************************
+
+S.S.4,
+ S1,
+     #Z10: ---> S2
+ S2,
+     #START:  TIME H(I) , M(I) , S(I) ; ADD I;
+             SET H (I) = - 987.987;
+             SET M (I) = - 987.987;
+             SET S (I) = - 987.987;
+      SHOW 1,Start Hr,H(0), 2,Start Min,M(0), 3,Start Sec,S(0) ---> S3
+ S3,
+   #R^FLEV: IF X > = 20 [@BOUT, @NOT]
+             @BOUT: SET X = 0; Z3 ; ADD B(0)---> SX
+             @NOT: ---> SX
+   0.10": SET X = X + 0.10 ---> SX
+
+S.S.5,
+  S1,
+    #Z10: ---> S2
+  S2,
+    #START: ---> S3
+  S3,
+     0.10": ON ^HOUSE, ^FLEV ; Z12 ---> S4
+  S4,
+     1#R^FLEV : SET C(D) = T + 0.20, X = 0; Z3; ADD D ---> S11
+  S11,
+     1#R^FLICK: SET C(D) = T + 0.10, F = 0; Z5; ADD D; ADD B(2)---> S12
+  S12,
+     #Z5:  TIME H(I) , M(I) , S(I) ; ADD I;
+             SET H (I) = - 987.987;
+             SET M (I) = - 987.987;
+             SET S (I) = - 987.987 ---> S14
+  S14,
+      #R^FLICK: IF F >= 20 [@Mark, @NoMark]
+              @Mark: TIME H(I), M(I), S(I); ADD I;
+                     SET H(I) = -987.987;
+                     SET M(I) = -987.987;
+                     SET S(I) = -987.987;
+                    SET C(D) = T + 0.10, T = 0, F = 0; ADD D; ADD B(2);
+                     IF D > = 20000 [@T, @F]
+                        @T: ---> STOPABORTFLUSH
+                        @F:SET C(D) = -987.987 ---> S14
+              @NoMark: SET F = 0 ---> S14
+    0.10": SET F = F + 0.10 ---> SX
+
+
+ S15,
+   0.10": OFF ^HOUSE,^FLEV,^FSIPPER;
+         SET C(D) = -987.987 ---> STOPABORTFLUSH
+ S16,
+   0.10": ---> STOPKILL
+
+\ *******************************************************************
+\            SCHEDULE CHNAGES FOR PROGRAM
+\ *******************************************************************
+
+S.S.6,
+ S1,
+   #Z10: --->S2
+ S2,
+    #START: ON ^FLEV, ^HOUSE ---> S3
+  S3,                                                \\\ 20 minutes to meet response requirement
+    20#R^FLEV: OFF ^FLEV ; ON ^FSIPPER ---> S4       \\\ this is where you change response requirement
+    20.0': ---> STOPABORTFLUSH
+ S4,                                                 \\\ 20 minutes for sipper then end program
+   #R^FLICK: ---> SX                                 \\\ Count Licks Here
+   20.0': OFF ^FSIPPER, ^HOUSE ---> STOPABORTFLUSH
+
+\\\***********************************************************************************
+
+S.S.8,
+  S1,
+    #Z10: ---> S2
+  S2,
+    #START: TIME H(I),M(I),S(I); ADD I;
+          SET H(I) = -987.987;
+          SET M(I) = -987.987;
+          SET S(I) = -987.987;
+          SHOW 1,Start Hr,H(0), 2,Start Min,M(0), 3,Start Sec,S(0) ---> SX
+
+\\\*************************************************************************************
+
+S.S.9,
+  S1,
+   #Z10: ---> S2
+  S2,
+    #START: SET J = 6 ---> S3
+  S3,                         \\\ Wait for signal that a Lever Press Bout has started
+    #Z3: TIME H(I),M(I),S(I);
+       SHOW J,LP Hr,H(I), J + 1,LP Min,M(I),  J + 2,LP Sec,S(I);
+          SET J = J + 5; ADD I;
+          SET H(I) = -987.987;
+          SET M(I) = -987.987;
+          SET S(I) = -987.987;
+          SET J = 11; ---> SX
+
+\\\**************************************************************************************
+
+S.S.10,
+  S1,
+    #Z10: ---> S2
+  S2,
+     #START: SET K = 16 ---> S3
+  S3,                         \\\ Wait for signal that a Lick Bout has started
+     #Z5: TIME H(I),M(I),S(I);
+         SHOW K,Lick Hr,H(I), K+1,Lick Min,M(I), K+2,Lick Sec,S(I);
+         SET K = K + 5; ADD I;
+           SET H(I) = -987.987;
+           SET M(I) = -987.987;
+           SET S(I) = -987.987;
+           SET K = 21; ---> SX
+
+\*******************************************************************
+\        COUNT RESPONSES FROM LEFT LEVER AND LSIPPER TUBE
+\*******************************************************************
+
+S.S.13,
+ S1,
+   #Z10: ---> S2
+ S2,
+   #START: ---> S3
+ S3,
+   #R^FLEV: Z3; ADD B(1) ---> S3
+   #R^FLICK: Z5; ADD B(3) ---> S3
+
+\*******************************************************************
+\                      SHOW COUNTERS ON SCREEN
+\*******************************************************************
+
+S.S.15,
+ S1,                                         \\\\ B(0) = FRONT LP BOUTS
+   #Z10: ---> S2                             \\\\ B(1) = FRONT TOTAL LP
+ S2,                                         \\\\ B(2) = FRONT SIPPER BOUTS
+   #START: ---> S3                           \\\\ B(3) = FRONT SIPPER TOTAL LICKS
+ S3,
+   1":SHOW 4,# of LP Bouts ,B(0); SHOW 5,Total # of LP, B(1);
+   SHOW 19,# of Lick Bouts ,B(2); SHOW 20,Total # of Licks, B(3) ---> S3
+
+\********************************************************************
+\                    INCREMENT TIME IN 0.01 SEC INCREMENTS
+\********************************************************************
+
+S.S.16,          \\\\TIMER FOR LEVER & LICK ONE DISKCOLUMN
+ S1,
+   #Z10: ---> S2
+ S2,
+   #START: ---> S3
+ S3,
+   0.10": ADD T ---> SX
+
+\  *************************************************************************************
+\    RECORD EACH IRT AND SET RESPONSES CODE FOR LEVER AND SIPPER
+\  *************************************************************************************
+
+S.S.18,      \\\ LEVER (.20)
+ S1,
+   #Z10: ---> S2
+ S2,
+   #START: ---> S3
+ S3,
+   #R^FLEV:SET C(D) = T + 0.20, T = 0; Z3; ADD D;
+               IF D > = 20000 [@T,@F]
+                  @T: ---> STOPABORT
+                  @F: SET C(D) = -987.987 ---> S3
+
+
+S.S.19,      \\\ LICKS (.10)
+ S1,
+   #Z10: --->S2
+ S2,
+   #START: --->S3
+ S3,
+   #R^FLICK:SET C(D) = T + 0.10, T = 0; Z5; ADD D;
+               IF D > = 20000 [@T,@F]
+                  @T: ---> STOPABORT
+                  @F: SET C(D) = -987.987 ---> S3
+
+\******************************************************************
+\                     END SESSION
+\******************************************************************
+S.S.32,
+ S1,
+  #Z10: ---> S2
+ S2,
+  #START: ---> S3
+ S3,
+  #Z11: ---> S4
+ S4,
+  0.10": ---> S5
+ S5,
+  0.10" : OFF ^HOUSE, ^FLEV, ^FSIPPER ---> STOPABORTFLUSH
+ S6,
+   0.10" ---> STOPKILL
