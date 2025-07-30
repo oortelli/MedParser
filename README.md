@@ -38,8 +38,11 @@ You're welcome to use, adapt, and build on this project as needed. This app was 
 - Integrate concurrent choice code and option (y/n)
 
 ## Publications Using `medparser` R Package Functions:
+- Bach et al. (2024). Chemogenetic inhibition of a monosynaptic projection from the basolateral amygdala to the ventral hippocampus selectively reduces appetitive, but not consummatory, alcohol drinking-related behaviours. European Journal of Neuroscience. PMCID: PMC10931538 [https://pubmed.ncbi.nlm.nih.gov/36840503/]
+  - Oral ethanol and sucrose self-administration (single reinforcer)
+
 - Ortelli and Weiner (2024). Validation of the extinction probe trial as a measure of motivation in male and female Long Evans rats. ACER. PMCID: PMC11568546 [https://pubmed.ncbi.nlm.nih.gov/38472151/]
   - Oral ethanol and sucrose self-administration (single reinforcer)
  
-- Dawes et al. (2024). Fentanyl self-administration is accelerated by methamphetamine co-use and results in worsened hypodopaminergia in male, but not female rats. PMCID: PMC11484618 [https://pubmed.ncbi.nlm.nih.gov/39251212/]
+- Dawes et al. (2024). Fentanyl self-administration is accelerated by methamphetamine co-use and results in worsened hypodopaminergia in male, but not female rats. European Journal of Neuroscience. PMCID: PMC11484618 [https://pubmed.ncbi.nlm.nih.gov/39251212/]
   - Intravenous self-administration. Data generated from custom-made operant conditioning chambers (Med-PC not required). 
