@@ -1,6 +1,6 @@
 # MedParser Shiny App
 
-This repository contains a Shiny application and supporting scripts for analyzing high-resolution lever pressing and licking data generated from operant oral ethanol/sucrose self-administration studies using the sipper tube model. The app is built around the `medparser` R package, which provides standardized functions for extracting session-level and time series data from .txt files, as generated from an operant self-administration session.
+This repository contains a Shiny application and supporting scripts for analyzing high-resolution lever pressing and licking data generated from operant oral ethanol/sucrose self-administration studies using the sipper tube model. The app is built around the `medparser` R package (https://CRAN.R-project.org/package=medparser), which provides standardized functions for extracting session-level and time series data from .txt files, as generated from an operant self-administration session.
 
 ## 🔍 Overview
 
