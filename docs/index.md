@@ -41,8 +41,3 @@ It provides standardized functions for extracting text from any .txt file. We us
 
 If you use MedParser in your work, please cite the relevant publications listed in each paradigm page. Contributions and suggestions are welcome via GitHub Issues or Pull Requests.
 
----
-
-## Getting Started
-
-To begin, visit the single_reinforcer_sippermodel.md page or explore other paradigms above.
