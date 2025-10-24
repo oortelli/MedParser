@@ -2,7 +2,7 @@
 
 **MedParser** is an R-based toolkit for parsing and analyzing behavioral data from `.txt` files, originally developed for operant self-administration studies using Med-PC. The functions are broadly applicable to any context where structured information needs to be extracted from plain text files.
 
-**Documentation Site**: [https://yourusername.github.io/medparser](https://oortelli.github.io/MedParser/)
+**Documentation Site**: [https://oortelli.github.io/MedParser/]
 
 ## Installation
 
