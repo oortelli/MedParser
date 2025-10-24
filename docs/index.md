@@ -45,4 +45,4 @@ If you use MedParser in your work, please cite the relevant publications listed 
 
 ## Getting Started
 
-To begin, visit the single_reinforcer.md page or explore other paradigms above.
+To begin, visit the single_reinforcer_sippermodel.md page or explore other paradigms above.
