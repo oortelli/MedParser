@@ -10,7 +10,7 @@ This site provides detailed documentation for each experimental context where Me
 
 Explore how MedParser has been adapted for different behavioral paradigms:
 
-- [Single Reinforcer Self-Administration, Biphasic Sipper Model](single_reinforcer.md)  
+- [Single Reinforcer Self-Administration, Biphasic Sipper Model](single_reinforcer_sippermodel.md)  
  Subjects are given a fixed amount of time (e.g., 20 minutes) to complete a single fixed ratio requirement (e.g., 20 lever presses). Upon completing the response requirement, they gain uninterrupted access to a sipper tube for a fixed duration (e.g., 20 minutes), allowing measurement of consummatory behavior following an appetitive phase.
 
 - Concurrent choice self-administration 
