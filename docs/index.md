@@ -22,6 +22,8 @@ Explore how MedParser has been adapted for different behavioral paradigms:
 - IV Self-Administration (non-MedPC)
   *(Documentation coming soon — page will include parsing code and examples for IV self-administration paradigms that do not use Med-PC equipment)*
 
+- [Elevated Plus Maze](elevated_plus_maze.md)  
+ A commonly used behavioral assay to assess approach/avoidance behavior / anxiety-related behavior in rodents.  
 ---
 
 ## About MedParser
@@ -29,7 +31,7 @@ Explore how MedParser has been adapted for different behavioral paradigms:
 MedParser is available on CRAN:  
 https://CRAN.R-project.org/package=medparser
 
-It provides standardized functions for extracting text from any .txt file. We use these functions to generate:
+It provides standardized functions for extracting text from any .txt file. We often use these functions to generate:
 - Session-level metrics
 - Time series data
 - Cumulative records
